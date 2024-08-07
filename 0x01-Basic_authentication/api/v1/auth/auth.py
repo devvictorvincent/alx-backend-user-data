@@ -20,10 +20,16 @@ class Auth:
         if path is None:
             return True
 
+        if not path.endswith('/'):
+            path += '/'
+
         if not excluded_paths or not isinstance(excluded_paths, list):
             return True
 
         for excluded_path in excluded_paths:
+            if not excluded_path.endswith('/'):
+                excluded_path += '/'
+
             if fnmatch.fnmatch(path, excluded_path):
                 return False
 
