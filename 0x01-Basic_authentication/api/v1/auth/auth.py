@@ -4,6 +4,7 @@ Auth module for the API
 """
 from flask import request
 from typing import List, TypeVar
+import fnmatch
 
 
 class Auth:
@@ -22,8 +23,8 @@ class Auth:
         if not excluded_paths or not isinstance(excluded_paths, list):
             return True
 
-        for excluced_path in excluded_paths:
-            if excluded_path == path:
+        for excluded_path in excluded_paths:
+            if fnmatch.fnmatch(path, excluded_path):
                 return False
 
         return True
