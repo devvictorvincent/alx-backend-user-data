@@ -20,6 +20,9 @@ auth = Auth()
 
 @app.before_request
 def before_request() ->str:
+    """
+    before evry request
+    """
     if auth is None:
         return
     excluded_paths = [
