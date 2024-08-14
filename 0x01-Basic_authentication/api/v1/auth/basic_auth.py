@@ -4,7 +4,9 @@ Basic Authentication
 """
 import base64
 import re
+from typing import TypeVar
 from .auth import Auth
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -62,3 +64,22 @@ class BasicAuth(Auth):
             password = match.group('password')
             return user, password
         return None, None
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):
+        """ Gets user Object based on
+        email and correct password
+        """
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+        try:
+            users = User.search({'email': user_email})
+        except Exception:
+            return None
+        if len(users) <= 0:
+            return None
+        if users[0].is_valid_password(user_pwd):
+            return users[0]
+        return None
