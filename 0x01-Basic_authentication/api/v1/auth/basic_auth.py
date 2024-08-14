@@ -49,9 +49,9 @@ class BasicAuth(Auth):
             authorization header
             """
         if decoded_base64_authorization_header is None:
-            return None
+            return None, None
         if not isinstance(decoded_base64_authorization_header, str):
-            return None
+            return None, None
         pattern = r'(?P<user>[^:]+):(?P<password>.+)'
         match = re.fullmatch(
                 pattern,
@@ -61,4 +61,4 @@ class BasicAuth(Auth):
             user = match.group('user')
             password = match.group('password')
             return user, password
-        return None
+        return None, None
