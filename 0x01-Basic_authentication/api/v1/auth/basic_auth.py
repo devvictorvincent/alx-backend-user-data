@@ -61,3 +61,4 @@ class BasicAuth(Auth):
             user = match.group('user')
             password = match.group('password')
             return user, password
+        return None
