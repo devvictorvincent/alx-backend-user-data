@@ -3,6 +3,7 @@
 Basic Authentication
 """
 import base64
+import re
 from .auth import Auth
 
 
@@ -40,3 +41,23 @@ class BasicAuth(Auth):
             return decoded.decode('utf-8')
         except (base64.binascii.Error, UnicodeDecodeError):
             return None
+        return
+
+    def extract_user_credentials(
+                self, decoded_base64_authorization_header: str) -> (str, str):
+        """ Extracts User credentials from base 64-decode
+            authorization header
+            """
+        if decoded_base64_authorization_header is None:
+            return None
+        if not isinstance(decoded_base64_authorization_header, str):
+            return None
+        pattern = r'(?P<user>[^:]+):(?P<password>.+)'
+        match = re.fullmatch(
+                pattern,
+                decoded_base64_authorization_header.strip(),
+        )
+        if match is not None:
+            user = match.group('user')
+            password = match.group('password')
+            return user, password
