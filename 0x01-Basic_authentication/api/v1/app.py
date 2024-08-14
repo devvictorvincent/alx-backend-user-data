@@ -19,7 +19,7 @@ auth = Auth()
 
 
 @app.before_request
-def before_request() ->str:
+def before_request() -> str:
     """
     before evry request
     """
